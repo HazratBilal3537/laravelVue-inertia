@@ -1,0 +1,9 @@
+{
+  "\u0000plugin-vue:export-helper": [],
+  "resources/js/layouts/DefaultLayout.vue": [],
+  "resources/js/pages/Error.vue": [],
+  "resources/js/pages/Home.vue": [],
+  "resources/js/setup/createInertiaPageResolver.js": [],
+  "resources/js/setup/registerPlugins.js": [],
+  "resources/js/ssr.js": []
+}
