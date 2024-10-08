@@ -3,7 +3,7 @@ import { createInertiaApp } from "@inertiajs/vue3";
 import { registerPlugins, createInertiaPageResolver } from "./setup";
 import { useInertiaRoutes } from "inertiaRoutes";
 import useInertiaI18nVue from "inertia-i18n/vue";
-
+import { Ziggy } from './ziggy';
 createInertiaApp({
 	resolve: createInertiaPageResolver(import.meta.glob("./pages/**/*.vue")),
 	setup({ el, App, props, plugin }) {
@@ -15,6 +15,7 @@ createInertiaApp({
 			.use(registerPlugins)
 			.use(inertiaRoutesPlugin)
 			.use(inertiaI18nPlugin)
+            .use(Ziggy)
 			.mount(el);
 	},
 });

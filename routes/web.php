@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\VerifyEmailNoticeController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Contracts\Cache\Store;
+use App\Http\Controllers\EmployeesController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,3 +38,6 @@ Route::get('/', function () {
 Route::resource('home', UserProfileController::class);
 Route::get('createuser', [UserProfileController::class, 'create']);
 Route::post('createuser', [UserProfileController::class, 'store']);
+
+
+Route::resource('employees', EmployeesController::class);

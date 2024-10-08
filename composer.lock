@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aba1c9793abf725d5112792ccfdb1945",
+    "content-hash": "ecde33f0a97b8cd74a0a234a6a288446",
     "packages": [
         {
             "name": "adminui/inertia-routes",

@@ -4,11 +4,12 @@ import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 import InertiaI18n from "inertia-i18n/vite";
 import AutoImport from "unplugin-auto-import/vite";
-
+import path from 'path';
 export default defineConfig({
 	resolve: {
 		alias: {
 			inertiaRoutes: resolve("vendor/adminui/inertia-routes"),
+            '@': path.resolve(__dirname, 'resources/js'),
 		},
 	},
 	plugins: [

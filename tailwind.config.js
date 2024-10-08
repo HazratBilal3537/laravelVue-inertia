@@ -2,7 +2,15 @@ import Typography from "@tailwindcss/typography";
 
 /** @type {import('tailwindcss').Config} */
 export default {
-	content: ["./resources/**/*.blade.php", "./resources/**/*.js", "./resources/**/*.vue"],
+    content: [
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+        './resources/js/**/*.vue',
+        "./index.html",
+        "./src/**/*.{vue,js,ts,jsx,tsx}",
+        "./node_modules/vue-tailwind-datepicker/**/*.js",
+    ],
 	theme: {
 		container: {
 			center: true,
