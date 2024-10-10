@@ -96,24 +96,24 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import PrimaryLink from "@/Components/PrimaryLink.vue";
 import InputError from "@/Components/InputError.vue";
-defineProps({
+const props=defineProps({
     employee: {
       type: Object,
       required: true,
     },
   });
 const form = useForm({
-    name: employee.name,
-    email: employee.email,
-    phone: employee.phone,
-    position: employee.position,
-    hire_date: employee.hire_date,
-    address: employee.address,
-    status: employee.status,
+    name: props.employee.name,
+    email: props.employee.email,
+    phone: props.employee.phone,
+    position: props.employee.position,
+    hire_date: props.employee.hire_date,
+    address: props.employee.address,
+    status: props.employee.status,
 });
 
 const submit = () => {
-    form.post(route("employees.store"));
+    form.put(route("employees.update",props.employee.id));
 };
 
 </script>

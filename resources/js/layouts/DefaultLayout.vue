@@ -3,7 +3,7 @@
 		<title>Application</title>
 	</Head>
 	<EvoHeader />
-	<main class="flex flex-col">
+	<main class="flex flex-col mb-5">
 		<slot></slot>
 	</main>
 	<EvoFooter />

@@ -2,22 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
-use App\Models\Employees;
 use Inertia\Inertia;
 
 use function Termwind\render;
+
 
 class EmployeesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users=Employees::all();
-        return Inertia::render('Employees/index',[
-        'users'=>$users
+        // Get the search query
+        $search = $request->input('search');
+
+        // Start building the query
+        $query = Employee::query();
+
+        // Check if there is a search term, then filter the query
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%')
+                  ->orWhere('position', 'like', '%' . $search . '%');
+        }
+
+        // Paginate the results
+        $employees = $query->paginate(10);
+
+        // Pass data to the Inertia view
+        return Inertia::render('Employees/index', [
+            'users' => $employees,
+            'filters' => $request->only('search'),
         ]);
     }
 
@@ -26,7 +44,7 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        // Just show the form without passing employees data
+        // Just show the form without passing employee data
         return Inertia::render('Employees/create');
     }
 
@@ -44,8 +62,9 @@ class EmployeesController extends Controller
             'address' => 'required|string|max:500',
             'status' => 'required|string|in:active,inactive',
         ]);
-       Employees::create($validatedData);
-       return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
+        // dd($validatedData);
+        Employee::create($validatedData);
+        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
     /**
@@ -53,33 +72,51 @@ class EmployeesController extends Controller
      */
     public function show($id) // Correct the model name
     {
-        $employees=Employees::find($id);
-        return Inertia::render('Employees/show',[
-            'employee'=> $employees
+        $employee = Employee::find($id);
+        return Inertia::render('Employees/show', [
+            'employee' => $employee
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Employees $employees) // Correct the model name
+    public function edit($id) // Correct the model name
     {
-        //
+        $employee = Employee::find($id);
+        return Inertia::render('Employees/update', [
+            'employee' => $employee
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Employees $employees) // Correct the model name
+    public function update(Request $request, Employee $employee) // Correct the model name
     {
-        //
+        // dd('testing request',$request);
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+           'email' => 'required|email|max:255|unique:employees,email,' . $employee->id,
+            'phone' => 'required|string|max:19',
+            'position' => 'required|string|max:255',
+            'hire_date' => 'required|date',
+            'address' => 'required|string|max:500',
+            'status' => 'required|string|in:active,inactive',
+        ]);
+
+        $employee->update($validatedData);
+
+        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employees $employees) // Correct the model name
+    public function destroy($id) // Correct the model name
     {
-        //
+
+        $employe=Employee::findOrFail($id);
+        $employe->delete();
     }
 }
