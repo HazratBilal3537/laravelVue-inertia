@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('position');
             $table->date('hire_date');
             $table->text('address')->nullable();
-            $table->string('status')->default('active');  
+            $table->string('status')->default('active');
+            $table->integer('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('componies')->onDelete('cascade');
             $table->timestamps();
         });
     }

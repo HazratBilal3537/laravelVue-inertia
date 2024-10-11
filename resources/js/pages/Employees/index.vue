@@ -1,4 +1,5 @@
 <template>
+    <AuthenticatedLayout>
     <div class="container  grow h-full justify-center">
         <div class="w-full ">
             <div class="bg-white rounded-md my-5 flex justify-end">
@@ -49,7 +50,7 @@
             <Pagination class="mt-7" :links="props.users.links" />
         </div>
     </div>
-
+</AuthenticatedLayout>
 </template>
 
 <script setup>
@@ -58,11 +59,15 @@ import Pagination from "@/Components/Pagination.vue";
 import DangerButton from "./../../components/DangerButton.vue"
 import PrimaryLink from "./../../components/PrimaryLink.vue"
 import { route } from "ziggy-js";
+import AuthenticatedLayout from "../../layouts/AuthenticatedLayout.vue";
 
 const props = defineProps({
     users: Object,
-    filters: Object
+    filters: Object,
+    companies:Object
 });
+console.log('props',props);
+
 const form =useForm({
     'search':props.filters.search || '',
 })

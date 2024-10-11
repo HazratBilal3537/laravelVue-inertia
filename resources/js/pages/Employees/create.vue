@@ -4,9 +4,7 @@
 
     <AuthenticatedLayout>
         <div class="my-5 max-w-2xl mx-auto bg-white p-6 shadow-md rounded-lg">
-            <PrimaryLink href="/employees" class="max-w-xl ml-2"
-                >back</PrimaryLink
-              >
+            <PrimaryLink href="/employees" class="max-w-xl ml-2">back</PrimaryLink>
             <h2 class="text-2xl font-semibold mb-6 text-gray-800">Employee Form</h2>
 
             <form @submit.prevent="submit" class="space-y-4">
@@ -16,7 +14,7 @@
 
                     <input id="name" type="text" v-model="form.name"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-              <InputError class="mt-2" :message="form.errors.name" />
+                    <InputError class="mt-2" :message="form.errors.name" />
                 </div>
 
                 <!-- Email -->
@@ -24,7 +22,7 @@
                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                     <input id="email" type="email" v-model="form.email"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-              <InputError class="mt-2" :message="form.errors.email" />
+                    <InputError class="mt-2" :message="form.errors.email" />
 
                 </div>
 
@@ -33,7 +31,7 @@
                     <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
                     <input id="phone" type="tel" v-model="form.phone"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-              <InputError class="mt-2" :message="form.errors.phone" />
+                    <InputError class="mt-2" :message="form.errors.phone" />
 
                 </div>
 
@@ -42,7 +40,7 @@
                     <label for="position" class="block text-sm font-medium text-gray-700">Position</label>
                     <input id="position" type="text" v-model="form.position"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-              <InputError class="mt-2" :message="form.errors.position" />
+                    <InputError class="mt-2" :message="form.errors.position" />
 
                 </div>
 
@@ -51,7 +49,7 @@
                     <label for="hire_date" class="block text-sm font-medium text-gray-700">Hire Date</label>
                     <input id="hire_date" type="date" v-model="form.hire_date"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-              <InputError class="mt-2" :message="form.errors.hire_date" />
+                    <InputError class="mt-2" :message="form.errors.hire_date" />
 
                 </div>
 
@@ -60,7 +58,7 @@
                     <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
                     <textarea id="address" v-model="form.address" rows="3"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-              <InputError class="mt-2" :message="form.errors.address" />
+                    <InputError class="mt-2" :message="form.errors.address" />
 
                 </div>
 
@@ -68,11 +66,24 @@
                 <div>
                     <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                     <select id="status" v-model="form.status"
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 py-3">
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
                     </select>
+                    <InputError class="mt-2" :message="form.errors.status" />
+
                 </div>
+                <!-- company -->
+                <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700 mt-4">Company</label>
+                    <select id="status" v-model="form.company_id"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 py-3">
+                        <option v-for="company in props.companies" :key="company.id" :value="company.id">{{ company.name }}</option>
+                    </select>
+                    <InputError class="mt-2" :message="form.errors.company_id" />
+
+                </div>
+
 
                 <!-- Submit Button -->
                 <div class="flex justify-end">
@@ -85,7 +96,7 @@
         </div>
     </AuthenticatedLayout>
 </template>
-<script setup >
+<script setup>
 import AuthenticatedLayout from "./../../layouts/AuthenticatedLayout.vue";
 import DangerButton from "@/components/DangerButton.vue"
 // import DangerButton from "./../../components/DangerButton.vue"
@@ -96,6 +107,8 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import PrimaryLink from "@/Components/PrimaryLink.vue";
 import InputError from "@/Components/InputError.vue";
+import Dropdown from "@/components/Dropdown.vue";
+
 
 const form = useForm({
     name: "",
@@ -105,7 +118,13 @@ const form = useForm({
     hire_date: "",
     address: "",
     status: "",
+    company_id :1,
 });
+
+const props = defineProps({
+    companies:Object
+});
+console.log(props);
 
 const submit = () => {
     form.post(route("employees.store"));
@@ -114,7 +133,12 @@ const submit = () => {
 </script>
 
 <style scoped>
-input,textarea:focus{
-    outline:none !important;
+input,
+textarea:focus {
+    outline: none !important;
+
+}
+input{
+    padding: 7px;
 }
 </style>

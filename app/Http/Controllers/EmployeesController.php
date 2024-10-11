@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\company;
+use Illuminate\Support\Facades\DB;
 
 use function Termwind\render;
 
@@ -44,8 +46,12 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        // Just show the form without passing employee data
-        return Inertia::render('Employees/create');
+        // all companies
+        $allcompany=company::all();
+        return Inertia::render('Employees/create',[
+            'companies'=> $allcompany
+
+        ]);
     }
 
     /**
@@ -61,6 +67,7 @@ class EmployeesController extends Controller
             'hire_date' => 'required|date',
             'address' => 'required|string|max:500',
             'status' => 'required|string|in:active,inactive',
+            'company_id'=>'required'
         ]);
         // dd($validatedData);
         Employee::create($validatedData);
@@ -73,8 +80,10 @@ class EmployeesController extends Controller
     public function show($id) // Correct the model name
     {
         $employee = Employee::find($id);
+
         return Inertia::render('Employees/show', [
-            'employee' => $employee
+            'employee' => $employee,
+            'company' => $employee->company
         ]);
     }
 
@@ -103,6 +112,8 @@ class EmployeesController extends Controller
             'hire_date' => 'required|date',
             'address' => 'required|string|max:500',
             'status' => 'required|string|in:active,inactive',
+            'company_id'=>'required'
+
         ]);
 
         $employee->update($validatedData);

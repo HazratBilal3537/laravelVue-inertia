@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\VerifyEmailNoticeController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Contracts\Cache\Store;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\ComponiesController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,3 +42,4 @@ Route::post('createuser', [UserProfileController::class, 'store']);
 
 
 Route::resource('employees', EmployeesController::class);
+Route::resource('companies', ComponiesController::class);

@@ -2,8 +2,8 @@
 	<Head>
 		<title>Application</title>
 	</Head>
-	<EvoHeader />
-	<main class="flex flex-col mb-5">
+	<EvoHeader class="sticky top-0" />
+	<main class="flex flex-col">
 		<slot></slot>
 	</main>
 	<EvoFooter />
