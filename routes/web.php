@@ -1,45 +1,32 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\LogoutController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\Auth\VerifyEmailNoticeController;
-use App\Http\Controllers\UserProfileController;
-use Illuminate\Contracts\Cache\Store;
-use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\ComponiesController;
+use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
-// Route::inertia('/home', 'Home')->name('home');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::middleware('guest')->prefix('auth')->name('auth.')->group(function () {
-//     Route::get('login', [LoginController::class, 'show'])->name('login');
-//     Route::post('login', [LoginController::class, 'store'])->name('login.store');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-//     Route::get('forgot-password', [ForgotPasswordController::class, 'show'])->name('forgot-password');
-//     Route::post('forgot-password', [ForgotPasswordController::class, 'store'])->name('forgot-password.store');
+Route::resource('employees', EmployeesController::class)->middleware(['auth', 'verified']);
+Route::resource('companies', ComponiesController::class)->middleware(['auth', 'verified']);
 
-//     Route::get('reset-password', [ResetPasswordController::class, 'show'])->name('reset-password');
-//     Route::post('reset-password', [ResetPasswordController::class, 'store'])->name('reset-password.store');
-// });
-
-// Route::middleware('auth')->prefix('auth')->group(function() {
-//     Route::delete('logout', LogoutController::class)->name('auth.logout');
-//     Route::middleware('signed')->get('email-verification/{id}/{hash}', [VerifyEmailController::class, 'show'])->name('verification.verify');
-//     Route::post('email-verification', [VerifyEmailController::class, 'store'])->name('verification.send');
-//     Route::get('email-verification-required', VerifyEmailNoticeController::class)->name('verification.notice');
-// });
-
-Route::resource('home', UserProfileController::class);
-Route::get('createuser', [UserProfileController::class, 'create']);
-Route::post('createuser', [UserProfileController::class, 'store']);
-
-
-Route::resource('employees', EmployeesController::class);
-Route::resource('companies', ComponiesController::class);
+require __DIR__.'/auth.php';

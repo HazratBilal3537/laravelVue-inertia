@@ -58,7 +58,7 @@ import { Head, router, useForm } from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination.vue";
 import DangerButton from "./../../components/DangerButton.vue"
 import PrimaryLink from "./../../components/PrimaryLink.vue"
-import { route } from "ziggy-js";
+// import { route } from "ziggy-js";
 import AuthenticatedLayout from "../../layouts/AuthenticatedLayout.vue";
 
 const props = defineProps({

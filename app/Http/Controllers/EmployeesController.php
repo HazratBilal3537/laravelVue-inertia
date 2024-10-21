@@ -7,12 +7,19 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\company;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\This;
 
 use function Termwind\render;
 
 
 class EmployeesController extends Controller
 {
+    ///////// global variable
+    // protected  $allcompany;
+    // public function __construct(Request $request) {
+    //     $this->allcompany =company::all();
+    // }
+
     /**
      * Display a listing of the resource.
      */
@@ -33,6 +40,7 @@ class EmployeesController extends Controller
 
         // Paginate the results
         $employees = $query->paginate(10);
+      
 
         // Pass data to the Inertia view
         return Inertia::render('Employees/index', [
@@ -47,7 +55,7 @@ class EmployeesController extends Controller
     public function create()
     {
         // all companies
-        $allcompany=company::all();
+        $allcompany =company::all();
         return Inertia::render('Employees/create',[
             'companies'=> $allcompany
 
@@ -94,7 +102,9 @@ class EmployeesController extends Controller
     {
         $employee = Employee::find($id);
         return Inertia::render('Employees/update', [
-            'employee' => $employee
+            'employee' => $employee,
+            'companies' => company::all()
+
         ]);
     }
 
@@ -103,10 +113,9 @@ class EmployeesController extends Controller
      */
     public function update(Request $request, Employee $employee) // Correct the model name
     {
-        // dd('testing request',$request);
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-           'email' => 'required|email|max:255|unique:employees,email,' . $employee->id,
+            'email' => 'required|email|max:255|unique:employees,email,' . $employee->id,
             'phone' => 'required|string|max:19',
             'position' => 'required|string|max:255',
             'hire_date' => 'required|date',

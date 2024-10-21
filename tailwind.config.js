@@ -1,4 +1,5 @@
-import Typography from "@tailwindcss/typography";
+import defaultTheme from 'tailwindcss/defaultTheme';
+import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -7,26 +8,15 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
-        "./index.html",
-        "./src/**/*.{vue,js,ts,jsx,tsx}",
-        "./node_modules/vue-tailwind-datepicker/**/*.js",
     ],
-	theme: {
-		container: {
-			center: true,
-			padding: {
-				DEFAULT: "1rem",
-				sm: "2rem",
-				lg: "4rem",
-				xl: "5rem",
-				"2xl": "6rem",
-			},
-		},
-		extend: {
-			screens: {
-				"3xl": "1924px",
-			},
-		},
-	},
-	plugins: [Typography()],
+
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            },
+        },
+    },
+
+    plugins: [forms],
 };

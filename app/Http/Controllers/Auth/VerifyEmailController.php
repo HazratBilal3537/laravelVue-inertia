@@ -2,35 +2,26 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
-use App\Facades\FlashService;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\RedirectResponse;
 
 class VerifyEmailController extends Controller
 {
-    public function show(EmailVerificationRequest $request): RedirectResponse
+    /**
+     * Mark the authenticated user's email address as verified.
+     */
+    public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
-        $request->fulfill();
+        if ($request->user()->hasVerifiedEmail()) {
+            return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
+        }
 
-        FlashService::success(
-            "Your email address has been successfully verified.",
-            'Email Verified'
-        );
+        if ($request->user()->markEmailAsVerified()) {
+            event(new Verified($request->user()));
+        }
 
-        return to_route('dashboard');
-    }
-
-    public function store(Request $request): RedirectResponse
-    {
-        $request->user()->sendEmailVerificationNotification();
-
-        FlashService::success(
-            "We've sent you a new email verification link. Please follow the instructions there to verify.",
-            'Verification Link Sent'
-        );
-
-        return back();
+        return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
     }
 }

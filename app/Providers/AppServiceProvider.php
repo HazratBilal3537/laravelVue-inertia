@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Schedule;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,22 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->changePasswordResetRoute();
-        $this->scheduleTasks();
-    }
-
-    private function scheduleTasks()
-    {
-        Schedule::command('auth:clear-resets')->everyFifteenMinutes();
-    }
-
-    private function changePasswordResetRoute()
-    {
-        \Illuminate\Auth\Notifications\ResetPassword::createUrlUsing(function ($notifiable, $token) {
-            return url(route('auth.reset-password', [
-                'token' => $token,
-                'email' => $notifiable->getEmailForPasswordReset(),
-            ], false));
-        });
+        Vite::prefetch(concurrency: 3);
     }
 }

@@ -73,6 +73,16 @@
                         <option value="inactive">Inactive</option>
                     </select>
                 </div>
+                     <!-- company -->
+                     <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700 mt-4">Company</label>
+                    <select id="status" v-model="form.company_id"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 py-3">
+                        <option v-for="company in props.companies" :key="company.id" :value="company.id">{{ company.name }}</option>
+                    </select>
+                    <InputError class="mt-2" :message="form.errors.company_id" />
+
+                </div>
 
                 <!-- Submit Button -->
                 <div class="flex justify-end">
@@ -97,10 +107,8 @@ import TextInput from "@/Components/TextInput.vue";
 import PrimaryLink from "@/Components/PrimaryLink.vue";
 import InputError from "@/Components/InputError.vue";
 const props=defineProps({
-    employee: {
-      type: Object,
-      required: true,
-    },
+    employee:Object,
+    companies:Object,
   });
 const form = useForm({
     name: props.employee.name,
@@ -110,10 +118,14 @@ const form = useForm({
     hire_date: props.employee.hire_date,
     address: props.employee.address,
     status: props.employee.status,
+    company_id :props.employee.company_id,
 });
+console.log(props);
 
 const submit = () => {
     form.put(route("employees.update",props.employee.id));
+    console.log(form);
+
 };
 
 </script>

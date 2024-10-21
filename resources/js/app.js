@@ -1,21 +1,27 @@
-import { createSSRApp, h } from "vue";
-import { createInertiaApp } from "@inertiajs/vue3";
-import { registerPlugins, createInertiaPageResolver } from "./setup";
-import { useInertiaRoutes } from "inertiaRoutes";
-import useInertiaI18nVue from "inertia-i18n/vue";
-import { Ziggy } from './ziggy';
-createInertiaApp({
-	resolve: createInertiaPageResolver(import.meta.glob("./pages/**/*.vue")),
-	setup({ el, App, props, plugin }) {
-		const inertiaRoutesPlugin = useInertiaRoutes(props);
-		const inertiaI18nPlugin = useInertiaI18nVue(props);
+import '../css/app.css';
+import './bootstrap';
 
-		createSSRApp({ render: () => h(App, props) })
-			.use(plugin)
-			.use(registerPlugins)
-			.use(inertiaRoutesPlugin)
-			.use(inertiaI18nPlugin)
-            .use(Ziggy)
-			.mount(el);
-	},
+import { createInertiaApp } from '@inertiajs/vue3';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { createApp, h } from 'vue';
+import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+
+const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) =>
+        resolvePageComponent(
+            `./Pages/${name}.vue`,
+            import.meta.glob('./Pages/**/*.vue'),
+        ),
+    setup({ el, App, props, plugin }) {
+        return createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .use(ZiggyVue)
+            .mount(el);
+    },
+    progress: {
+        color: '#4B5563',
+    },
 });

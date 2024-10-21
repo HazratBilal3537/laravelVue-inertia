@@ -1,8 +1,8 @@
 <template>
-    <AuthenticatedLayout>
+<AuthenticatedLayout>
     <div class="container  grow h-full justify-center">
         <div class="w-full ">
-            <div class="bg-white rounded-md my-5 flex justify-end">
+            <div class=" rounded-md my-5 flex justify-end">
                 <PrimaryLink href="companies/create" class="max-w-xl ml-2">Add Company</PrimaryLink>
             </div>
             <div class="">
@@ -52,16 +52,16 @@
             <!-- <Pagination class="mt-7" :links="props.users.links" /> -->
         </div>
     </div>
-    </AuthenticatedLayout>
+</AuthenticatedLayout>
 </template>
 
 <script setup>
 import { Head, router, useForm } from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination.vue";
 import DangerButton from "./../../components/DangerButton.vue"
-import PrimaryLink from "./../../components/PrimaryLink.vue"
-import { route } from "ziggy-js";
-import AuthenticatedLayout from "../../layouts/AuthenticatedLayout.vue";
+import PrimaryLink from "@/components/PrimaryLink.vue"
+// import { route } from "ziggy-js";
+import AuthenticatedLayout from './../../Layouts/AuthenticatedLayout.vue'
 
 const props = defineProps({
     companies: Object,
