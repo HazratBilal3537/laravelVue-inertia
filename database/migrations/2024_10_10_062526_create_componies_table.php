@@ -22,6 +22,10 @@ return new class extends Migration
             $table->integer('number_of_employees')->nullable();
             $table->timestamps();
         });
+
+        Schema::table('employees', function (Blueprint $table) {
+            $table->foreign('company_id')->references('id')->on('companies')->ondelete('cascade');
+        });
     }
 
     /**
